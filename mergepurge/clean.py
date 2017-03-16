@@ -316,9 +316,12 @@ def build_matching_cols(df, addy_cols=None, contact_cols=None, company_cols=None
         with similar contact or account data
     """
 
-    for arg_ in [addy_cols, contact_cols, company_cols]:
-        if arg_ is None:
-            arg_ = []
+    if addy_cols is None:
+        addy_cols = []
+    if contact_cols is None:
+        contact_cols = []
+    if company_cols is None:
+        company_cols = []
 
     if len(addy_cols) > 0:
         df['aa_streetnum'], df['aa_street'], df['aa_city'],\
