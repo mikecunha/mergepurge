@@ -196,7 +196,7 @@ def find_repeated_label(name_, type=None):
     return problem_key, problem_vals, nameparts_so_far
 
 
-def parse_contact_name(row, name_cols, strict=True):
+def parse_contact_name(row, name_cols, strict=True, type='person'):
     """Parses a person's name with probablepeople library
 
     Concatenates all the contact name columns into a single string and then attempts to parse it
@@ -209,6 +209,7 @@ def parse_contact_name(row, name_cols, strict=True):
             comprise a person's name
         strict (boolean, optional): Whether or not to raise a RepeatedLabelError when parsing, if
             False, the last value of the repeated labels will be used for the parse
+        type (str): Which probableparser to use: 'generic', 'person' or 'company'
 
     Returns:
         A subset (tuple of str, or np.nan) of the standardized name components, namely:
@@ -224,7 +225,7 @@ def parse_contact_name(row, name_cols, strict=True):
     cleaned = re.sub(r'(not\s*available|not\s*provided|n/a)', '', concat, flags=re.IGNORECASE)
 
     try:
-        parsed = probablepeople.tag(cleaned)
+        parsed = probablepeople.tag(cleaned, type)
     except probablepeople.RepeatedLabelError as e:
         if strict:
             raise e
@@ -243,7 +244,7 @@ def parse_contact_name(row, name_cols, strict=True):
     return title, first, last, full_name
 
 
-def parse_business_name(row, name_cols, strict=True):
+def parse_business_name(row, name_cols, strict=True, type='generic'):
     """Parses a Company name with probablepeople library
 
     Concatenates all the company name columns into a single string and then attempts to parse it
@@ -257,6 +258,7 @@ def parse_business_name(row, name_cols, strict=True):
             comprise a company/business name
         strict (boolean, optional): Whether or not to raise a RepeatedLabelError when parsing, if
             False, the last value of the repeated labels will be used for the parse
+        type (str): Which probableparser to use: 'generic', 'person' or 'company'
 
     Returns:
         biz_name (str or np.nan): Filtered and standardized company name
@@ -278,7 +280,7 @@ def parse_business_name(row, name_cols, strict=True):
     cleaned = re.sub(r'(not\s*available|not\s*provided|n/a)', '', concat, flags=re.IGNORECASE)
 
     try:
-        parsed = probablepeople.tag(cleaned)  # type='company'? general parser works better
+        parsed = probablepeople.tag(cleaned, type)  # type='company'? general parser works better
     except probablepeople.RepeatedLabelError as e:
         if strict:
             raise e
