@@ -3,18 +3,22 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
+
 here = path.abspath(path.dirname(__file__))
 
-# Get the long description from the README file
-#with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-#    long_description = f.read()
+
+def open_file(fname):
+    return open(path.join(here, fname), encoding='utf-8')
+
 
 setup(
     name='mergepurge',
     version='0.1.0',
-    description='A package to merge contacts/accounts and purge dupicates.',
+    description='A package to merge contacts/accounts and purge duplicates.',
+    long_description=open_file('README.rst').read(),
+    url='https://github.com/mikecunha/mergepurge',
     author='Mike Cunha',
-    license='MIT',
+    license=open('LICENSE.txt').read(),
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -25,9 +29,8 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
     packages=['mergepurge'],
-    install_requires=['pandas', 'usaddress', 'parserator', 'probablepeople',
-                      'numpy', 'fuzzywuzzy', 'xlrd', 'openpyxl',
-                      'XlsxWriter'],
+    install_requires=['pandas', 'usaddress', 'probablepeople', 'numpy',
+                      'fuzzywuzzy'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
