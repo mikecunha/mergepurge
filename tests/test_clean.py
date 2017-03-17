@@ -1,21 +1,21 @@
+import os
 import pytest
 from mergepurge import clean
 import pandas as pd
 import numpy as np
 
+COMP_PATH = os.path.join('tests', 'complete_parsed.tsv')
+COMP_DTYPES = {'aa_streetnum': str, 'aa_zip': str, 'zipcode': str}
+complete = pd.read_csv(COMP_PATH, sep='\t', encoding='utf-8', dtype=COMP_DTYPES)
 
-complete = pd.read_csv('complete_parsed.tsv',
-                       sep='\t', encoding='utf-8',
-                       dtype={'aa_streetnum': str, 'aa_zip': str, 'zipcode': str})
-
-COMP_LOC_COLS = ['address', 'city', 'state', 'zipcode']
+COMP_LOC_COLS     = ['address', 'city', 'state', 'zipcode']
 COMP_CONTACT_COLS = ['first', 'last']
 COMP_COMPANY_COLS = ['company']
-BUILT_COLS = [col for col in complete.columns if col.startswith('aa_')]
+BUILT_COLS        = [col for col in complete.columns if col.startswith('aa_')]
 
-partial = pd.read_csv('./incomplete.tsv',
-                      sep='\t', encoding='utf-8',
-                      dtype={'aa_streetnum': str, 'aa_zip': str, 'zipcode': str})
+PARTIAL_PATH = os.path.join('tests', 'incomplete.tsv')
+PARTIAL_DTYPES = {'aa_streetnum': str, 'aa_zip': str, 'zipcode': str}
+partial = pd.read_csv(PARTIAL_PATH, sep='\t', encoding='utf-8', dtype=PARTIAL_DTYPES)
 
 trecords = [row for (index, row) in complete.iterrows()]
 
