@@ -1,6 +1,6 @@
 import os
 import pytest
-from mergepurge import clean
+from mergepurge import clean, match
 import pandas as pd
 import numpy as np
 
@@ -16,6 +16,10 @@ BUILT_COLS        = [col for col in complete.columns if col.startswith('aa_')]
 PARTIAL_PATH = os.path.join('tests', 'incomplete.tsv')
 PARTIAL_DTYPES = {'aa_streetnum': str, 'aa_zip': str, 'zipcode': str}
 partial = pd.read_csv(PARTIAL_PATH, sep='\t', encoding='utf-8', dtype=PARTIAL_DTYPES)
+
+PART_LOC_COLS     = ['address', 'city', 'state', 'zipcode']
+PART_CONTACT_COLS = ['first', 'last']
+PART_COMPANY_COLS = ['company']
 
 trecords = [row for (index, row) in complete.iterrows()]
 
@@ -51,3 +55,25 @@ def test_build_matching_cols():
                                       COMP_CONTACT_COLS,
                                       COMP_COMPANY_COLS)
     assert all(built[BUILT_COLS] == known)
+
+
+partial_parsed  = clean.build_matching_cols(partial.copy(),
+                                            PART_LOC_COLS,
+                                            PART_CONTACT_COLS,
+                                            PART_COMPANY_COLS)
+related_records = match.find_related(partial_parsed, complete)
+partial_parsed['matching_record'] = [ind for (mtype, ind) in related_records]
+
+part_records = [row for (index, row) in partial_parsed.iterrows()]
+
+
+@pytest.mark.parametrize('row', part_records)
+def test_find_related(row):
+    # print(row['ID'], row['matching_record'])
+
+    known = set(str(row.get('ID', '')).split(','))
+    known = {int(ind) for ind in known}
+    found = set(row.get('matching_record', ''))
+    print(known, found)
+
+    assert known == found
