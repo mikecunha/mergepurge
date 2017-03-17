@@ -18,9 +18,6 @@ Requirements
 Install
 -------
 
-<s>Pip</s> (not on PYPI yet)  
-Use [pip](http://pip.readthedocs.org/en/latest/quickstart.html), a python package manager ([beginner's guide here](http://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/)) and a virtual environment.
-
 Manually with Git
 
 .. code:: bash
