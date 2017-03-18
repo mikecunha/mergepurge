@@ -16,11 +16,11 @@ Functions and Roadmap
 
 The currently implemented high-level methods include:
 
-**preprocessing contact info**   
+**preprocessing contact info**  
 ``mp.clean.build_matching_cols()`` will standardize address, human names, and business names with a series of preprocessing steps and output a standard set of columns (prefixed with '``aa_``') that can be used as input to ``find_related()``.
 
 
-**finding matches**   
+**finding matches**  
 ``mp.match.find_related()`` uses a fixed algorithm of fuzzy and exact comparisons on a combo of fields (hand-coded decision tree) to find related contact or account records. I plan on adding an array of additional matching algorithms to choose from that will allow you to select the best one for your specific data.
 
 **merging records**  
