@@ -24,7 +24,7 @@ The currently implemented high-level methods include:
 ``mp.match.find_related()`` uses a fixed algorithm of fuzzy and exact comparisons on a combo of fields (hand-coded decision tree) to find related contact or account records. I plan on adding an array of additional matching algorithms to choose from that will allow you to select the best one for your specific data.
 
 **merging records**  
-``mp.match.merge_lists()`` adds the chosen columns of one DataFrame to the matching records of another DataFrame. In the future I plan on adding "upsert" <https://en.wikipedia.org/wiki/Merge_(SQL)#Synonymous> and more complicated joins to let you specify how to handle one-to-many and many-many relationships between DataFrames.
+``mp.match.merge_lists()`` adds the chosen columns of one DataFrame to the matching records of another DataFrame. In the future I plan on adding "upsert" <https://en\.wikipedia\.org/wiki/Merge\_\(SQL\)\#Synonymous> and more complicated joins to let you specify how to handle one-to-many and many-many relationships between DataFrames.
 
 In the mean-time, ``build_matching_cols()`` and some other lower-level functions in this package can help you quickly get to a point where you are ready to experiment with your own matching and merging code:
 
