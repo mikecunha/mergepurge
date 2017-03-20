@@ -56,8 +56,11 @@ Manually with Git
 Usage
 -----
 
-Check out the Jupyter Notebook `Usage.ipynb` in the github repo for an example workflow of how to use mergepurge.
+Check out the Jupyter Notebook `Usage.ipynb` in the github repo for a detailed example workflow of
+how to use mergepurge.
 <https://github.com/mikecunha/mergepurge/blob/master/Usage.ipynb>
+
+An overview of things you can do is as follows:
 
 .. code:: python
 
@@ -74,5 +77,23 @@ Build a standardized set of columns to use for matching
     ...                                         ['firstname', 'lastname'],
     ...                                         ['company'])
 
+Find matching contacts in another dataframe that already has the matching columns in it
 
+.. code:: python
 
+    >>> related = mp.match.find_related(contacts, other_contacts)
+
+Using those matches, add columns from the other dataframe
+
+.. code:: python
+
+    >>> merged_contacts = mp.match.merge_lists(contacts, other_contacts,
+    ...                                        matching_indices=related,
+    ...                                        wanted_cols=['email','customer_ID'])
+
+Remove columns built for matching
+
+.. code:: python
+
+    >>> built_cols = [col for col in merged_contacts.columns if col.startswith('aa_')]
+    >>> merged_contacts.drop(built_cols, axis=1, inplace=True)
