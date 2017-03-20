@@ -11,6 +11,29 @@ This package aims to make it easy to quickly preprocess that DataFrame and compa
 
 The code here stems from code I have written repeatedly in Jupyter notebooks as preprocessing steps to clean up client data.
 
+Examples of Vague Input Formats
+-------------------------------
+
+All of the following example tables of data should work fine as input.
+
+Name             | Address 1            | Address 2          | City         | State | Zip
+---------------- | -------------------- | ------------------ | ------------ | ----- | ------
+Dr. Leo Spaceman | 30 Rockefeller Plaza | GE Bldg            | New York     | NY    | 10112
+Dr. Spaceman     | Attn: Leo            | 30 Rockefeller Plz | New York     | NY    | 10112
+
+name             | address                        | city         | state
+---------------- | ------------------------------ | ------------ | -----
+Dr. Leo Spaceman | 30 Rockefeller Plaza, GE Bldg  | New York     | NY
+Dr Spaceman      | Attn: Leo - 30 Rockefeller Plz | New York     | NY    
+
+title  | first_name   | last name | Address                        | City         | State
+------ | ------------ | --------- | ------------------------------ | ------------ | -----
+       | Leo          | Spaceman  | 30 Rockefeller Plaza, GE Bldg  | New York     | NY
+       | Doctor       | spaceman  | Attn: Leo - 30 Rockefeller Plz | New York     | NY
+Dr     | notavailable | spaceman  | 30 Rockefeller Plaza           | New York     | NY
+
+Notice, not only are there different column names and columns, but there are missing values and pieces of information occuring in the wrong column as well. All of those scenarios should be handled ok as long as mixed up data occurs in the same type of column (location, name, or business name) and you pass the correct order of columns to ``build_matching_cols()``.
+
 Functions and Roadmap
 ---------------------
 
@@ -56,7 +79,7 @@ Manually with Git
 Usage
 -----
 
-Check out the Jupyter Notebook `Usage.ipynb` in the github repo for a detailed example workflow of
+Check out the Jupyter Notebook ``Usage.ipynb`` in the github repo for a detailed example workflow of
 how to use mergepurge.
 <https://github.com/mikecunha/mergepurge/blob/master/Usage.ipynb>
 
