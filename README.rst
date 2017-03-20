@@ -56,7 +56,7 @@ Manually with Git
 Usage
 -----
 
-Check out the Jupyter Notebook [Usage\.ipynb](Usage\.ipynb) in the github repo for an example workflow of how to use mergepurge. 
+Check out the Jupyter Notebook `Usage.ipynb` in the github repo for an example workflow of how to use mergepurge.
 <https://github.com/mikecunha/mergepurge/blob/master/Usage.ipynb>
 
 .. code:: python
