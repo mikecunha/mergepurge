@@ -16,15 +16,20 @@ Examples of Vague Input Formats
 
 All of the following example tables of data should work fine as input.
 
++------------------+----------------------+--------------------+--------------+-------+--------+
 | Name             | Address 1            | Address 2          | City         | State | Zip    |
++==================+======================+====================+==============+=======+========+
 | ---------------- | -------------------- | ------------------ | ------------ | ----- | ------ |
 | Dr. Leo Spaceman | 30 Rockefeller Plaza | GE Bldg            | New York     | NY    | 10112  |
 | Dr. Spaceman     | Attn: Leo            | 30 Rockefeller Plz | New York     | NY    | 10112  |
++------------------+----------------------+--------------------+--------------+-------+--------+
+
 
 | name             | address                        | city         | state |
 | ---------------- | ------------------------------ | ------------ | ----- |
 | Dr. Leo Spaceman | 30 Rockefeller Plaza, GE Bldg  | New York     | NY    |
 | Dr Spaceman      | Attn: Leo - 30 Rockefeller Plz | New York     | NY    |
+
 
 | title  | first_name   | last name | Address                        | City         | State |
 | ------ | ------------ | --------- | ------------------------------ | ------------ | ----- |
