@@ -3,9 +3,8 @@ import pytest
 from mergepurge import clean, match
 import pandas as pd
 import numpy as np
+from context import COMP_PATH, PARTIAL_PATH
 
-
-COMP_PATH = os.path.join('tests', 'complete_parsed.tsv')
 COMP_DTYPES = {'aa_streetnum': str, 'aa_zip': str, 'zipcode': str}
 complete = pd.read_csv(COMP_PATH, sep='\t', encoding='utf-8', dtype=COMP_DTYPES)
 
@@ -14,7 +13,6 @@ COMP_CONTACT_COLS = ['first', 'last']
 COMP_COMPANY_COLS = ['company']
 BUILT_COLS        = [col for col in complete.columns if col.startswith('aa_')]
 
-PARTIAL_PATH = os.path.join('tests', 'incomplete.tsv')
 PARTIAL_DTYPES = {'aa_streetnum': str, 'aa_zip': str, 'zipcode': str}
 partial = pd.read_csv(PARTIAL_PATH, sep='\t', encoding='utf-8', dtype=PARTIAL_DTYPES)
 
