@@ -59,6 +59,7 @@ def test_build_matching_cols():
                                       COMP_COMPANY_COLS)
     assert all(built[BUILT_COLS] == known)
 
+
 # ################  Test match.py  ################# #
 
 partial_parsed  = clean.build_matching_cols(partial.copy(),
@@ -66,7 +67,7 @@ partial_parsed  = clean.build_matching_cols(partial.copy(),
                                             PART_CONTACT_COLS,
                                             PART_COMPANY_COLS)
 related_records = match.find_related(partial_parsed, complete)
-partial_parsed['matching_record'] = [ind for (mtype, ind) in related_records]
+partial_parsed['matching_record'] = [sin_ind for (mtype, sfor_ind, sin_ind) in related_records]
 
 part_records = [row for (index, row) in partial_parsed.iterrows()]
 

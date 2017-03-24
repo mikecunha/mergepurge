@@ -116,7 +116,7 @@ def find_related(search_for, search_in):
 
     Returns:
         A list of tuples like:
-            [('match type', [search_in.index]), ... ]
+            [('match type', search_for.index, [search_in.index]), ... ]
         Where the match type is a description of how the search_for record was matched to the
         following search_in.indices. This format is meant to be used as input for
         match.merge_lists()
@@ -128,7 +128,12 @@ def find_related(search_for, search_in):
 
     num_to_match = len(search_for)
 
-    for i, attendee in search_for.iterrows():
+    if not search_for.index.is_unique:
+        raise ValueError('Duplicate index entries of records being searched for are not allowed.')
+    if not search_in.index.is_unique:
+        raise ValueError('Duplicate index entries of records being searched are not allowed.')
+
+    for sf_ind, attendee in search_for.iterrows():
 
         # Exact match on Full Contact Name and State Abbrv.
         if pd.isnull(attendee.aa_fullname) is False:
@@ -143,7 +148,7 @@ def find_related(search_for, search_in):
                 if len(matches) > 1:
                     more_than_one += 1
 
-                search_for_related.append(('ExactNameState', matches.index))
+                search_for_related.append(('ExactNameState', sf_ind, matches.index))
                 continue
 
         # Exact match on some parts of the address
@@ -157,7 +162,7 @@ def find_related(search_for, search_in):
             if len(matches) > 1:
                 more_than_one += 1
 
-            search_for_related.append(('ExactAddress', matches.index))
+            search_for_related.append(('ExactAddress', sf_ind, matches.index))
             continue
 
         # Fuzzy match on Contact Name and Exact match on State
@@ -171,7 +176,7 @@ def find_related(search_for, search_in):
             if len(matches) > 1:
                 more_than_one += 1
 
-            search_for_related.append(('fuzzContact-ExactState', matches.index))
+            search_for_related.append(('fuzzContact-ExactState', sf_ind, matches.index))
             continue
 
         # Exact match on State and Fuzzy match on business name
@@ -187,11 +192,11 @@ def find_related(search_for, search_in):
             if len(matches) > 1:
                 more_than_one += 1
 
-            search_for_related.append(('FuzzBiz-ExactState', matches.index))
+            search_for_related.append(('FuzzBiz-ExactState', sf_ind, matches.index))
             continue
 
         # give up no matches for this record
-        search_for_related.append((None, ()))
+        search_for_related.append((None, None, ()))
 
     print(''.join((str(round(total_matches / len(search_for.head(num_to_match)) * 100, 2)),
           '% (', str(total_matches), ') of search_for records have at least 1 matching record.')))
@@ -214,7 +219,7 @@ def merge_lists(dest, src, matching_indices, wanted_cols):
         dest (pd.DataFrame): DF you would like to add columns from another source to
         src (pd.DataFrame): DF containing matching contacts complete with the desired columns
         matching_indices (list): list of tuples - the output of match.find_related():
-            [('ExactAddress', Int64Index([2585, 2586]))]
+            [('ExactAddress', 2, Int64Index([2585, 2586]))]
         wanted_cols (list): list of column names (str) to add to the destination dataframe from
             the src dataframe
 
@@ -227,27 +232,27 @@ def merge_lists(dest, src, matching_indices, wanted_cols):
     addtl_dest_cols = []
     src_matches = 0
 
-    for i, (rec_type, rec_index) in enumerate(matching_indices):
+    for (rec_type, dest_ind, src_index) in matching_indices:
 
-        if len(rec_index) < 1:
+        if len(src_index) < 1:
             addtl_dest_cols.append({})
             continue
-        elif len(rec_index) == 1:
+        elif len(src_index) == 1:
             multi = False
         else:
             multi = True
 
         src_matches += 1
 
-        matches = src.ix[rec_index]
+        matches = src.ix[src_index]
 
         for id_, m in matches.iterrows():
 
             # user-requested columns from src data
             total_record = m[wanted_cols].to_dict()
 
-            total_record['source_ID']       = id_
-            total_record['dest_ID']         = i
+            total_record['src_ID']          = src_index
+            total_record['dest_ID']         = dest_ind
             total_record['source_type']     = rec_type
             total_record['multiple_emails'] = multi
 
@@ -261,7 +266,7 @@ def merge_lists(dest, src, matching_indices, wanted_cols):
     output = dest.merge(pd.DataFrame(addtl_dest_cols),
                         suffixes=('_dest', '_src'),
                         right_on='dest_ID',
-                        left_on='ID',
+                        left_index=True,
                         how='left',
                         )
     return output
