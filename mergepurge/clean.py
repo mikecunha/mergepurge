@@ -46,7 +46,7 @@ def find_repeated_address_label(addr):
     return problem_key, problem_vals, nameparts_so_far
 
 
-def parse_location_cols(row, addr_cols, strict=True):
+def parse_location_cols(row, addr_cols, strict=False):
     """Parses address columns with usaddress library
 
     Returns a subset of normalized address components that are useful when comparing contacts.
@@ -196,7 +196,7 @@ def find_repeated_label(name_, type=None):
     return problem_key, problem_vals, nameparts_so_far
 
 
-def parse_contact_name(row, name_cols, strict=True, type='person'):
+def parse_contact_name(row, name_cols, strict=False, type='person'):
     """Parses a person's name with probablepeople library
 
     Concatenates all the contact name columns into a single string and then attempts to parse it
@@ -244,7 +244,7 @@ def parse_contact_name(row, name_cols, strict=True, type='person'):
     return title, first, last, full_name
 
 
-def parse_business_name(row, name_cols, strict=True, type='generic'):
+def parse_business_name(row, name_cols, strict=False, type='generic'):
     """Parses a Company name with probablepeople library
 
     Concatenates all the company name columns into a single string and then attempts to parse it
