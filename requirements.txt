@@ -1,0 +1,6 @@
+numpy
+pandas
+fuzzywuzzy
+python-Levenshtein>=0.12.0
+probablepeople
+usaddress
